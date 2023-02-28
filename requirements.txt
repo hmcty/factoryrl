@@ -1,0 +1,4 @@
+pygame
+perlin_noise
+gymnasium
+opencv-python
