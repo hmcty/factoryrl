@@ -12,13 +12,13 @@ def main():
       'logdir': '~/logdir/run1',
       'run.train_ratio': 64,
       'run.log_every': 30,  # Seconds
-      'batch_size': 16,
+      'batch_size': 8,
       'jax.prealloc': False,
       'encoder.mlp_keys': '$^',
       'decoder.mlp_keys': '$^',
       'encoder.cnn_keys': 'image',
       'decoder.cnn_keys': 'image',
-      'jax.platform': 'cpu',
+      # 'jax.platform': 'cpu',
   })
   config = embodied.Flags(config).parse()
 

@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+
+import numpy as np
+import cv2
+import os
+import sys
+
+def main():
+    if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
+        print("Incorrect or missing arg\nUsage: replay <path to npz file>")
+        exit()
+
+    data = np.load(sys.argv[1])
+    for i in range(data['image'].shape[0]):
+        img = data['image'][i]
+        reward = data['reward'][i]
+        cv2.imshow("Replay", img)
+
+        if cv2.waitKey(20) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
