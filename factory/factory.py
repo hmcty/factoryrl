@@ -60,6 +60,10 @@ class Factory:
         
     def add_belt_flow(self, a: tuple[int, int], b: tuple[int, int], cap: int = 100):
         """Creates a flow of moveable resources between two points"""
+        if a[0] < 0 or a[0] >= self._map_size[0]: return
+        if a[1] < 0 or a[1] >= self._map_size[1]: return
+        if b[0] < 0 or b[0] >= self._map_size[0]: return
+        if b[1] < 0 or b[1] >= self._map_size[1]: return
         self._resource_flows.append(((FactoryResource.COAL_ORE,) + a, (FactoryResource.COAL_ORE,) + b, cap))
         self._resource_flows.append(((FactoryResource.IRON_ORE,) + a, (FactoryResource.IRON_ORE,) + b, cap))
         self._resource_flows.append(((FactoryResource.STEEL,) + a, (FactoryResource.STEEL,) + b, cap))
@@ -93,10 +97,10 @@ class Factory:
                 self._resource_map[start_x][start_y][start_type] -= amt
                 self._resource_map[end_x][end_y][end_type] = end_amt + amt
 
-            if start_type != end_type:
-                self._resource_amts[start_type] -= amt
-                self._resource_amts[end_type] = self._resource_amts.get(end_type, 0) + amt
-                new_resources[end_type] = new_resources.get(end_type, 0) + amt
+                if start_type != end_type:
+                    self._resource_amts[start_type] -= amt
+                    self._resource_amts[end_type] = self._resource_amts.get(end_type, 0) + amt
+                    new_resources[end_type] = new_resources.get(end_type, 0) + amt
         return new_resources
 
     def reset(self, cursor: tuple[int, int] = (0, 0)):

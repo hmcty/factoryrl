@@ -14,7 +14,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
-                    _, reward, _, info = factory.step(FactoryAction.MOVE_CURSOR_UP)
+                    _, reward, _, info = factory.step(2)
                 elif event.key == pygame.K_s:
                     _, reward, _, info = factory.step(FactoryAction.MOVE_CURSOR_DOWN)
                 elif event.key == pygame.K_d:

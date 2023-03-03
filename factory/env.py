@@ -10,18 +10,18 @@ from .factory import Factory
 from .data import FactoryEquipment, FactoryResource
 
 class FactoryAction(Enum):
-    MOVE_CURSOR_LEFT = auto()
-    MOVE_CURSOR_RIGHT = auto()
-    MOVE_CURSOR_UP = auto()
-    MOVE_CURSOR_DOWN = auto()
-    BUILD_LEFT_BELT = auto()
-    BUILD_RIGHT_BELT = auto()
-    BUILD_UP_BELT = auto()
-    BUILD_DOWN_BELT = auto()
-    BUILD_MINE = auto()
-    BUILD_FURNACE = auto()
-    BUILD_PAPERCLIP_MACHINE = auto()
-    WAIT = auto()
+    MOVE_CURSOR_LEFT = 0
+    MOVE_CURSOR_RIGHT = 1
+    MOVE_CURSOR_UP = 2
+    MOVE_CURSOR_DOWN = 3
+    BUILD_LEFT_BELT = 4
+    BUILD_RIGHT_BELT = 5
+    BUILD_UP_BELT = 6
+    BUILD_DOWN_BELT = 7
+    BUILD_MINE = 8
+    BUILD_FURNACE = 9
+    BUILD_PAPERCLIP_MACHINE = 10
+    WAIT = 11
 
 class FactoryEnv(gym.Env):
     def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=10000):
@@ -63,10 +63,10 @@ class FactoryEnv(gym.Env):
         """Modifies factory w.r.t. cursor position"""
         return gym.spaces.Discrete(len(FactoryAction))
 
-    def step(self, action: gym.spaces.Discrete):
+    def step(self, action: int):
         # Step internal engine
         self._step += 1
-        match action:
+        match FactoryAction(action):
             case FactoryAction.MOVE_CURSOR_LEFT:
                 self._factory.move_cursor(dx=-1)
             case FactoryAction.MOVE_CURSOR_RIGHT:
