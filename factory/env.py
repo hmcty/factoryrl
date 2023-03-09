@@ -165,7 +165,7 @@ class FactoryEnv(gym.Env):
 
         return obs
 
-    def render(self):
+    def render(self, *args):
         obs = self.observe()
         obs.astype(np.float32)
         img = cv2.resize(obs, (512, 512), interpolation=cv2.INTER_NEAREST)

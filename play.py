@@ -37,13 +37,16 @@ def main():
                     _, reward, _, info = factory.step(FactoryAction.BUILD_PAPERCLIP_MACHINE)
                 elif event.key == pygame.K_q:
                     sys.exit()
+                elif event.key == pygame.K_r:
+                    factory.reset()
+                    total_reward = 0.0
             elif event.type == pygame.QUIT:
                 sys.exit()
 
         total_reward += reward
         map = factory.render()
         screen.blit(pygame.surfarray.make_surface(map), (0, 0))
-        screen.blit(reward_font.render(f"Reward: {total_reward:.2f}", 1, (0, 0, 0)), (10, 10))
+        screen.blit(reward_font.render(f"reward: {total_reward:.2f}", 1, (0, 0, 0)), (10, 10))
         pygame.display.flip()
 
 if __name__ == "__main__":

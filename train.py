@@ -7,12 +7,12 @@ def main():
 
   # See configs.yaml for all options.
   config = embodied.Config(dreamerv3.configs['defaults'])
-  config = config.update(dreamerv3.configs['medium'])
+  # config = config.update(dreamerv3.configs['medium'])
   config = config.update({
-      'logdir': '~/logdir/run1',
+      'logdir': '~/logdir/run3',
       'run.train_ratio': 64,
-      'run.log_every': 30,  # Seconds
-      'batch_size': 8,
+      'run.log_every': 90,  # Seconds
+      'batch_size': 10,
       'jax.prealloc': False,
       'encoder.mlp_keys': '$^',
       'decoder.mlp_keys': '$^',
@@ -46,8 +46,6 @@ def main():
       **config.run, logdir=config.logdir,
       batch_steps=config.batch_size * config.batch_length)
   embodied.run.train(agent, env, replay, logger, args)
-  # embodied.run.eval_only(agent, env, logger, args)
-
 
 if __name__ == '__main__':
   main()
