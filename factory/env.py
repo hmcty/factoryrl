@@ -144,21 +144,21 @@ class FactoryEnv(gym.Env):
                 if resources.get(FactoryResource.IRON_DEPOSIT, 0) > 0:
                     set_block(x, y, self._assets["iron_deposit.png"])
 
-                match self._factory.get_equipment(map_roi[0] + x, map_roi[1] + y):
-                    case FactoryEquipment.EMPTY:
-                        pass
-                    case FactoryEquipment.LEFT_BELT:
-                        set_block(x, y, self._assets["left_belt.png"])
-                    case FactoryEquipment.RIGHT_BELT:
-                        set_block(x, y, self._assets["right_belt.png"])
-                    case FactoryEquipment.UP_BELT:
-                        set_block(x, y, self._assets["up_belt.png"])
-                    case FactoryEquipment.DOWN_BELT:
-                        set_block(x, y, self._assets["down_belt.png"])
-                    case FactoryEquipment.MINE:
-                        set_block(x, y, self._assets["mine.png"])
-                    case FactoryEquipment.FURNACE:
-                        set_block(x, y, self._assets["furnace.png"])
+                equipment = self._factory.get_equipment(map_roi[0] + x, map_roi[1] + y):
+                if equipment == FactoryEquipment.EMPTY:
+                    pass
+                elif equipment == FactoryEquipment.LEFT_BELT:
+                    set_block(x, y, self._assets["left_belt.png"])
+                elif equipment == FactoryEquipment.RIGHT_BELT:
+                    set_block(x, y, self._assets["right_belt.png"])
+                elif equipment == FactoryEquipment.UP_BELT:
+                    set_block(x, y, self._assets["up_belt.png"])
+                elif equipment == FactoryEquipment.DOWN_BELT:
+                    set_block(x, y, self._assets["down_belt.png"])
+                elif equipment == FactoryEquipment.MINE:
+                    set_block(x, y, self._assets["mine.png"])
+                elif equipment == FactoryEquipment.FURNACE:
+                    set_block(x, y, self._assets["furnace.png"])
 
         obs_cursor_x = cursor[0] - map_roi[0]
         obs_cursor_y = cursor[1] - map_roi[1] 
