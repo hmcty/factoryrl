@@ -2,3 +2,16 @@ pygame
 perlin_noise
 gymnasium
 opencv-python
+
+# dreamerv3 dependencies
+cloudpickle
+crafter
+gym
+jax
+jaxlib
+numpy
+optax
+rich
+ruamel.yaml
+tensorflow-cpu
+tensorflow_probability
