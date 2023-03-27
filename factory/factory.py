@@ -37,26 +37,25 @@ class Factory:
             return
 
         self._equipment_map[self._x][self._y] = equipment        
-        match equipment:
-            case FactoryEquipment.RIGHT_BELT:
-                self.add_belt_flow((self._x-1, self._y), (self._x, self._y))
-                self.add_belt_flow((self._x, self._y), (self._x+1, self._y))
-            case FactoryEquipment.LEFT_BELT:
-                self.add_belt_flow((self._x+1, self._y), (self._x, self._y))
-                self.add_belt_flow((self._x, self._y), (self._x-1, self._y))
-            case FactoryEquipment.DOWN_BELT:
-                self.add_belt_flow((self._x, self._y-1), (self._x, self._y))
-                self.add_belt_flow((self._x, self._y), (self._x, self._y+1))
-            case FactoryEquipment.UP_BELT:
-                self.add_belt_flow((self._x, self._y+1), (self._x, self._y))
-                self.add_belt_flow((self._x, self._y), (self._x, self._y-1))
-            case FactoryEquipment.MINE:
-                self.add_alchemy_flow((self._x, self._y), FactoryResource.COAL_DEPOSIT, FactoryResource.COAL_ORE)
-                self.add_alchemy_flow((self._x, self._y), FactoryResource.IRON_DEPOSIT, FactoryResource.IRON_ORE)
-            case FactoryEquipment.FURNACE:
-                self.add_alchemy_flow((self._x, self._y), FactoryResource.IRON_ORE, FactoryResource.STEEL)
-            case FactoryEquipment.PAPERCLIP_MACHINE:
-                self.add_alchemy_flow((self._x, self._y), FactoryResource.STEEL, FactoryResource.PAPERCLIP) 
+        if equipment == FactoryEquipment.RIGHT_BELT:
+            self.add_belt_flow((self._x-1, self._y), (self._x, self._y))
+            self.add_belt_flow((self._x, self._y), (self._x+1, self._y))
+        elif equipment == FactoryEquipment.LEFT_BELT:
+            self.add_belt_flow((self._x+1, self._y), (self._x, self._y))
+            self.add_belt_flow((self._x, self._y), (self._x-1, self._y))
+        elif equipment == FactoryEquipment.DOWN_BELT:
+            self.add_belt_flow((self._x, self._y-1), (self._x, self._y))
+            self.add_belt_flow((self._x, self._y), (self._x, self._y+1))
+        elif equipment == FactoryEquipment.UP_BELT:
+            self.add_belt_flow((self._x, self._y+1), (self._x, self._y))
+            self.add_belt_flow((self._x, self._y), (self._x, self._y-1))
+        elif equipment == FactoryEquipment.MINE:
+            self.add_alchemy_flow((self._x, self._y), FactoryResource.COAL_DEPOSIT, FactoryResource.COAL_ORE)
+            self.add_alchemy_flow((self._x, self._y), FactoryResource.IRON_DEPOSIT, FactoryResource.IRON_ORE)
+        elif equipment == FactoryEquipment.FURNACE:
+            self.add_alchemy_flow((self._x, self._y), FactoryResource.IRON_ORE, FactoryResource.STEEL)
+        elif equipment == FactoryEquipment.PAPERCLIP_MACHINE:
+            self.add_alchemy_flow((self._x, self._y), FactoryResource.STEEL, FactoryResource.PAPERCLIP) 
         
     def add_belt_flow(self, a: tuple[int, int], b: tuple[int, int], cap: int = 100):
         """Creates a flow of moveable resources between two points"""

@@ -66,31 +66,32 @@ class FactoryEnv(gym.Env):
     def step(self, action: int):
         # Step internal engine
         self._step += 1
-        match FactoryAction(action):
-            case FactoryAction.MOVE_CURSOR_LEFT:
-                self._factory.move_cursor(dx=-1)
-            case FactoryAction.MOVE_CURSOR_RIGHT:
-                self._factory.move_cursor(dx=1)
-            case FactoryAction.MOVE_CURSOR_UP:
-                self._factory.move_cursor(dy=-1)
-            case FactoryAction.MOVE_CURSOR_DOWN:
-                self._factory.move_cursor(dy=1)
-            case FactoryAction.BUILD_LEFT_BELT:
-                self._factory.build_equipment(FactoryEquipment.LEFT_BELT)
-            case FactoryAction.BUILD_RIGHT_BELT:
-                self._factory.build_equipment(FactoryEquipment.RIGHT_BELT)
-            case FactoryAction.BUILD_UP_BELT:
-                self._factory.build_equipment(FactoryEquipment.UP_BELT)
-            case FactoryAction.BUILD_DOWN_BELT:
-                self._factory.build_equipment(FactoryEquipment.DOWN_BELT)
-            case FactoryAction.BUILD_MINE:
-                self._factory.build_equipment(FactoryEquipment.MINE)
-            case FactoryAction.BUILD_FURNACE:
-                self._factory.build_equipment(FactoryEquipment.FURNACE)
-            case FactoryAction.BUILD_PAPERCLIP_MACHINE:
-                self._factory.build_equipment(FactoryEquipment.PAPERCLIP_MACHINE)
-            case FactoryAction.WAIT:
-                pass
+        
+        action = FactoryAction(action)
+        if action == FactoryAction.MOVE_CURSOR_LEFT:
+            self._factory.move_cursor(dx=-1)
+        elif action == FactoryAction.MOVE_CURSOR_RIGHT:
+            self._factory.move_cursor(dx=1)
+        elif action == FactoryAction.MOVE_CURSOR_UP:
+            self._factory.move_cursor(dy=-1)
+        elif action == FactoryAction.MOVE_CURSOR_DOWN:
+            self._factory.move_cursor(dy=1)
+        elif action == FactoryAction.BUILD_LEFT_BELT:
+            self._factory.build_equipment(FactoryEquipment.LEFT_BELT)
+        elif action == FactoryAction.BUILD_RIGHT_BELT:
+            self._factory.build_equipment(FactoryEquipment.RIGHT_BELT)
+        elif action == FactoryAction.BUILD_UP_BELT:
+            self._factory.build_equipment(FactoryEquipment.UP_BELT)
+        elif action == FactoryAction.BUILD_DOWN_BELT:
+            self._factory.build_equipment(FactoryEquipment.DOWN_BELT)
+        elif action == FactoryAction.BUILD_MINE:
+            self._factory.build_equipment(FactoryEquipment.MINE)
+        elif action == FactoryAction.BUILD_FURNACE:
+            self._factory.build_equipment(FactoryEquipment.FURNACE)
+        elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
+            self._factory.build_equipment(FactoryEquipment.PAPERCLIP_MACHINE)
+        elif action == FactoryAction.WAIT:
+            pass
 
         new_resources = self._factory.step()
         reward = new_resources.get(FactoryResource.PAPERCLIP, 0.0) * 2.0
