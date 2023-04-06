@@ -6,7 +6,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((512, 512))
     
-    factory = FactoryEnv()
+    factory = FactoryEnv(asset_path='assets')
     reward_font = pygame.font.SysFont("monospace", 15)
     total_reward = 0.0
     info = {}
