@@ -89,8 +89,8 @@ class FactoryEnv(gym.Env):
             self._factory.build_equipment(EquipmentType.MINE)
         elif action == FactoryAction.BUILD_FURNACE:
             self._factory.build_equipment(EquipmentType.FURNACE)
-        elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
-            self._factory.build_equipment(EquipmentType.PAPERCLIP_MACHINE)
+        # elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
+        #     self._factory.build_equipment(EquipmentType.PAPERCLIP_MACHINE)
         elif action == FactoryAction.DESTROY_EQUIPMENT:
             self._factory.destroy_equipment()
         elif action == FactoryAction.WAIT:
