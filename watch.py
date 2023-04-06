@@ -15,7 +15,7 @@ def main():
     config = embodied.Config(dreamerv3.configs['defaults'])
     config = config.update(dreamerv3.configs['medium'])
     config = config.update({
-        'logdir': '~/logdir/run2',
+        'logdir': '~/logdir/runb',
         'run.train_ratio': 64,
         'run.log_every': 90,  # Seconds
         'batch_size': 10,
@@ -37,7 +37,7 @@ def main():
         # embodied.logger.WandBOutput(logdir.name, config),
         # embodied.logger.MLFlowOutput(logdir.name),
     ])
-    config = config.update(run=config.run.update(from_checkpoint='~/logdir/run3/checkpoint.ckpt'))
+    config = config.update(run=config.run.update(from_checkpoint='~/logdir/runb/checkpoint.ckpt'))
     args = embodied.Config(
         **config.run, logdir=config.logdir,
         batch_steps=config.batch_size * config.batch_length)

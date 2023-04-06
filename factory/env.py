@@ -7,7 +7,7 @@ from perlin_noise import PerlinNoise
 import random
 
 from .factory import Factory
-from .data import FactoryEquipment, FactoryResource
+from .types import EquipmentType, ResourceType
 
 class FactoryAction(Enum):
     MOVE_CURSOR_LEFT = 0
@@ -48,10 +48,10 @@ class FactoryEnv(gym.Env):
             for y in range(map_size[1]):
                 coal = coal_noise([x / 64, y / 64])
                 if coal > 0.2:
-                    self._factory.add_resource(x, y, FactoryResource.COAL_DEPOSIT, 1000)
+                    self._factory.add_resource(x, y, ResourceType.COAL_DEPOSIT, 1000)
                 iron = iron_noise([x / 64, y / 64])
                 if iron > 0.3:
-                    self._factory.add_resource(x, y, FactoryResource.IRON_DEPOSIT, 1000)
+                    self._factory.add_resource(x, y, ResourceType.IRON_DEPOSIT, 1000)
 
     @property
     def observation_space(self):
@@ -77,50 +77,51 @@ class FactoryEnv(gym.Env):
         elif action == FactoryAction.MOVE_CURSOR_DOWN:
             self._factory.move_cursor(dy=1)
         elif action == FactoryAction.BUILD_LEFT_BELT:
-            self._factory.build_equipment(FactoryEquipment.LEFT_BELT)
+            self._factory.build_equipment(EquipmentType.LEFT_BELT)
         elif action == FactoryAction.BUILD_RIGHT_BELT:
-            self._factory.build_equipment(FactoryEquipment.RIGHT_BELT)
+            self._factory.build_equipment(EquipmentType.RIGHT_BELT)
         elif action == FactoryAction.BUILD_UP_BELT:
-            self._factory.build_equipment(FactoryEquipment.UP_BELT)
+            self._factory.build_equipment(EquipmentType.UP_BELT)
         elif action == FactoryAction.BUILD_DOWN_BELT:
-            self._factory.build_equipment(FactoryEquipment.DOWN_BELT)
+            self._factory.build_equipment(EquipmentType.DOWN_BELT)
         elif action == FactoryAction.BUILD_MINE:
-            self._factory.build_equipment(FactoryEquipment.MINE)
+            self._factory.build_equipment(EquipmentType.MINE)
         elif action == FactoryAction.BUILD_FURNACE:
-            self._factory.build_equipment(FactoryEquipment.FURNACE)
+            self._factory.build_equipment(EquipmentType.FURNACE)
         elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
-            self._factory.build_equipment(FactoryEquipment.PAPERCLIP_MACHINE)
+            self._factory.build_equipment(EquipmentType.PAPERCLIP_MACHINE)
         elif action == FactoryAction.WAIT:
             pass
 
         new_resources = self._factory.step()
-        reward = new_resources.get(FactoryResource.PAPERCLIP, 0.0) * 2.0
-        reward += new_resources.get(FactoryResource.STEEL, 0.0) * 0.5
-        reward += new_resources.get(FactoryResource.IRON_ORE, 0.0) * 0.1
-        reward += new_resources.get(FactoryResource.COAL_ORE, 0.0) * 0.1
+        reward = new_resources.get(ResourceType.PAPERCLIP, 0.0) * 2.0
+        reward += new_resources.get(ResourceType.STEEL, 0.0) * 0.5
+        reward += new_resources.get(ResourceType.IRON_ORE, 0.0) * 0.1
+        reward += new_resources.get(ResourceType.COAL_ORE, 0.0) * 0.1
         obs = self.observe()
         done = self._step >= self._max_steps
 
-        # info = {
-        #     'resources': self._factory.get_resources(cursor[0], cursor[1]),
-        # }
+        x, y = self._factory.get_cursor()
+        info = {
+            'resources': self._factory.get_resources(x, y),
+        }
 
-        return obs, reward, done, {}
+        return obs, reward, done, info
 
     def reset(self):
         self._step = 0
         cursor_pos = (random.randint(0, self._map_size[0] - 1), random.randint(0, self._map_size[1] - 1))
         self._factory.reset(cursor=cursor_pos)
-        coal_noise = PerlinNoise(octaves=6, seed=0)
-        iron_noise = PerlinNoise(octaves=6, seed=1)
+        coal_noise = PerlinNoise(octaves=6)
+        iron_noise = PerlinNoise(octaves=6)
         for x in range(self._map_size[0]):
             for y in range(self._map_size[1]):
                 coal = coal_noise([x / 64, y / 64])
                 if coal > 0.2:
-                    self._factory.add_resource(x, y, FactoryResource.COAL_DEPOSIT, 1000)
+                    self._factory.add_resource(x, y, ResourceType.COAL_DEPOSIT, 250)
                 iron = iron_noise([x / 64, y / 64])
-                if iron > 0.3:
-                    self._factory.add_resource(x, y, FactoryResource.IRON_DEPOSIT, 1000)
+                if iron > 0.2:
+                    self._factory.add_resource(x, y, ResourceType.IRON_DEPOSIT, 250)
         
         return self.observe()
 
@@ -139,26 +140,31 @@ class FactoryEnv(gym.Env):
         for x in range(8):
             for y in range(8):
                 resources = self._factory.get_resources(map_roi[0] + x, map_roi[1] + y)
-                if resources.get(FactoryResource.COAL_DEPOSIT, 0) > 0:
+                if resources.get(ResourceType.COAL_DEPOSIT, 0) > 0:
                     set_block(x, y, self._assets["coal_deposit.png"])
-                if resources.get(FactoryResource.IRON_DEPOSIT, 0) > 0:
+                if resources.get(ResourceType.IRON_DEPOSIT, 0) > 0:
                     set_block(x, y, self._assets["iron_deposit.png"])
 
-                equipment = self._factory.get_equipment(map_roi[0] + x, map_roi[1] + y):
-                if equipment == FactoryEquipment.EMPTY:
+                equipment = self._factory.get_equipment(map_roi[0] + x, map_roi[1] + y)
+                if equipment == EquipmentType.EMPTY:
                     pass
-                elif equipment == FactoryEquipment.LEFT_BELT:
+                elif equipment == EquipmentType.LEFT_BELT:
                     set_block(x, y, self._assets["left_belt.png"])
-                elif equipment == FactoryEquipment.RIGHT_BELT:
+                elif equipment == EquipmentType.RIGHT_BELT:
                     set_block(x, y, self._assets["right_belt.png"])
-                elif equipment == FactoryEquipment.UP_BELT:
+                elif equipment == EquipmentType.UP_BELT:
                     set_block(x, y, self._assets["up_belt.png"])
-                elif equipment == FactoryEquipment.DOWN_BELT:
+                elif equipment == EquipmentType.DOWN_BELT:
                     set_block(x, y, self._assets["down_belt.png"])
-                elif equipment == FactoryEquipment.MINE:
+                elif equipment == EquipmentType.MINE:
                     set_block(x, y, self._assets["mine.png"])
-                elif equipment == FactoryEquipment.FURNACE:
+                elif equipment == EquipmentType.FURNACE:
                     set_block(x, y, self._assets["furnace.png"])
+
+                if resources.get(ResourceType.COAL_ORE, 0) > 0:
+                    set_block(x, y, self._assets["coal_deposit.png"])
+                if resources.get(ResourceType.IRON_ORE, 0) > 0:
+                    set_block(x, y, self._assets["iron_deposit.png"])
 
         obs_cursor_x = cursor[0] - map_roi[0]
         obs_cursor_y = cursor[1] - map_roi[1] 

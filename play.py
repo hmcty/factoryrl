@@ -9,8 +9,9 @@ def main():
     factory = FactoryEnv()
     reward_font = pygame.font.SysFont("monospace", 15)
     total_reward = 0.0
+    info = {}
     while True:
-        reward, info = 0.0, {}
+        reward = 0.0
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
@@ -40,6 +41,7 @@ def main():
                 elif event.key == pygame.K_r:
                     factory.reset()
                     total_reward = 0.0
+                print(info)
             elif event.type == pygame.QUIT:
                 sys.exit()
 
