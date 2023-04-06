@@ -25,7 +25,7 @@ class FactoryAction(IntEnum):
     WAIT = auto()
 
 class FactoryEnv(gym.Env):
-    def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=10000):
+    def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=10000, asset_path="assets"):
         self._map_size = map_size 
         self._obs_size = obs_size
 
@@ -35,8 +35,8 @@ class FactoryEnv(gym.Env):
         self._max_steps = max_steps
 
         self._assets = {}
-        for asset in os.listdir("assets"):
-            img = cv2.imread(os.path.join("assets", asset), cv2.IMREAD_UNCHANGED)
+        for asset in os.listdir(asset_path):
+            img = cv2.imread(os.path.join(asset_path, asset), cv2.IMREAD_UNCHANGED)
             img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
             img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
             img = cv2.flip(img, 1)
