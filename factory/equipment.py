@@ -3,6 +3,11 @@ import numpy as np
 
 class Equipment:
     @property
+    def pos(self):
+        """Returns the position of the equipment."""
+        return self._pos
+
+    @property
     def input(self):
         """Map index to get resource inputs."""
         return self._input
@@ -25,6 +30,7 @@ class Belt(Equipment):
 
     def __init__(self, pos: tuple[int, int], type: EquipmentType):
         x, y = pos
+        self._pos = pos
         self._output = (x, y, self.moveable_resources)
         self._flow = np.full((len(self.moveable_resources),), 25.0, dtype=np.float32)
         if type == EquipmentType.LEFT_BELT:
@@ -45,6 +51,7 @@ class Belt(Equipment):
 class Mine(Equipment):
 
     def __init__(self, pos: tuple[int, int]):
+        self._pos = pos
         self._input = pos + ((ResourceType.COAL_DEPOSIT, ResourceType.IRON_DEPOSIT),)
         self._output = pos + ((ResourceType.COAL_ORE, ResourceType.IRON_ORE),)
         self._flow = np.array([50.0, 50.0], dtype=np.float32)
@@ -57,6 +64,7 @@ class Furnace(Equipment):
 
     def __init__(self, pos: tuple[int, int]):
         x, y = pos
+        self._pos = pos
         self._input = (slice(x-1, x+2), slice(y-1, y+2), 
             (ResourceType.COAL_ORE, ResourceType.IRON_ORE))
         self._output = pos + ((ResourceType.STEEL),)

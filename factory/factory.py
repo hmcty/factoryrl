@@ -45,6 +45,18 @@ class Factory:
         else:
             raise ValueError("Invalid equipment type")
 
+    def destroy_equipment(self, pos: Optional[tuple[int, int]] = None):
+        x = pos[0] if pos else self._x
+        y = pos[1] if pos else self._y
+        if self._equipment_map[x][y] == EquipmentType.EMPTY:
+            return
+
+        self._equipment_map[x][y] = EquipmentType.EMPTY
+        for equipment in self._equipment:
+            if equipment.pos == (x, y):
+                self._equipment.remove(equipment)
+                break
+
     def get_resources(self, x: int, y: int) -> dict[ResourceType, int]:
         resources = {}
         for i in range(len(ResourceType)):

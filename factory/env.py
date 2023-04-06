@@ -21,7 +21,8 @@ class FactoryAction(Enum):
     BUILD_MINE = 8
     BUILD_FURNACE = 9
     BUILD_PAPERCLIP_MACHINE = 10
-    WAIT = 11
+    DESTROY_EQUIPMENT = 11
+    WAIT = 12
 
 class FactoryEnv(gym.Env):
     def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=10000):
@@ -90,6 +91,8 @@ class FactoryEnv(gym.Env):
             self._factory.build_equipment(EquipmentType.FURNACE)
         elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
             self._factory.build_equipment(EquipmentType.PAPERCLIP_MACHINE)
+        elif action == FactoryAction.DESTROY_EQUIPMENT:
+            self._factory.destroy_equipment()
         elif action == FactoryAction.WAIT:
             pass
 
@@ -122,7 +125,6 @@ class FactoryEnv(gym.Env):
                 iron = iron_noise([x / 64, y / 64])
                 if iron > 0.2:
                     self._factory.add_resource(x, y, ResourceType.IRON_DEPOSIT, 250)
-        
         return self.observe()
 
     def observe(self) -> np.ndarray:
@@ -156,15 +158,16 @@ class FactoryEnv(gym.Env):
                     set_block(x, y, self._assets["up_belt.png"])
                 elif equipment == EquipmentType.DOWN_BELT:
                     set_block(x, y, self._assets["down_belt.png"])
-                elif equipment == EquipmentType.MINE:
-                    set_block(x, y, self._assets["mine.png"])
-                elif equipment == EquipmentType.FURNACE:
-                    set_block(x, y, self._assets["furnace.png"])
 
                 if resources.get(ResourceType.COAL_ORE, 0) > 0:
                     set_block(x, y, self._assets["coal_deposit.png"])
                 if resources.get(ResourceType.IRON_ORE, 0) > 0:
                     set_block(x, y, self._assets["iron_deposit.png"])
+
+                if equipment == EquipmentType.MINE:
+                    set_block(x, y, self._assets["mine.png"])
+                elif equipment == EquipmentType.FURNACE:
+                    set_block(x, y, self._assets["furnace.png"])
 
         obs_cursor_x = cursor[0] - map_roi[0]
         obs_cursor_y = cursor[1] - map_roi[1] 

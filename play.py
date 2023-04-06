@@ -36,6 +36,8 @@ def main():
                     _, reward, _, info = factory.step(FactoryAction.BUILD_FURNACE)
                 elif event.key == pygame.K_7:
                     _, reward, _, info = factory.step(FactoryAction.BUILD_PAPERCLIP_MACHINE)
+                elif event.key == pygame.K_8:
+                    _, reward, _, info = factory.step(FactoryAction.DESTROY_EQUIPMENT)
                 elif event.key == pygame.K_q:
                     sys.exit()
                 elif event.key == pygame.K_r:
