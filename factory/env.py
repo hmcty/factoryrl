@@ -10,7 +10,7 @@ from .factory import Factory
 from .types import EquipmentType, ResourceType
 
 class FactoryAction(IntEnum):
-    MOVE_CURSOR_LEFT = auto()
+    MOVE_CURSOR_LEFT = 0
     MOVE_CURSOR_RIGHT = auto()
     MOVE_CURSOR_UP = auto()
     MOVE_CURSOR_DOWN = auto()
