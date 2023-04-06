@@ -1,5 +1,5 @@
 import gymnasium as gym
-from enum import Enum, auto
+from enum import Enum, IntEnum, auto
 import numpy as np
 import cv2
 import os
@@ -9,20 +9,20 @@ import random
 from .factory import Factory
 from .types import EquipmentType, ResourceType
 
-class FactoryAction(Enum):
-    MOVE_CURSOR_LEFT = 0
-    MOVE_CURSOR_RIGHT = 1
-    MOVE_CURSOR_UP = 2
-    MOVE_CURSOR_DOWN = 3
-    BUILD_LEFT_BELT = 4
-    BUILD_RIGHT_BELT = 5
-    BUILD_UP_BELT = 6
-    BUILD_DOWN_BELT = 7
-    BUILD_MINE = 8
-    BUILD_FURNACE = 9
-    BUILD_PAPERCLIP_MACHINE = 10
-    DESTROY_EQUIPMENT = 11
-    WAIT = 12
+class FactoryAction(IntEnum):
+    MOVE_CURSOR_LEFT = auto()
+    MOVE_CURSOR_RIGHT = auto()
+    MOVE_CURSOR_UP = auto()
+    MOVE_CURSOR_DOWN = auto()
+    BUILD_LEFT_BELT = auto()
+    BUILD_RIGHT_BELT = auto()
+    BUILD_UP_BELT = auto()
+    BUILD_DOWN_BELT = auto()
+    BUILD_MINE = auto()
+    BUILD_FURNACE = auto()
+    # BUILD_PAPERCLIP_MACHINE = auto()
+    DESTROY_EQUIPMENT = auto()
+    WAIT = auto()
 
 class FactoryEnv(gym.Env):
     def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=10000):
