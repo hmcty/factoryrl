@@ -77,7 +77,6 @@ class Factory:
         for equipment in self._equipment:
             in_flow, out_flow = equipment.process(old_resources[equipment.input])
             self._resources[equipment.output] += out_flow
-            print(equipment.output)
             resource_changes[equipment.output[-1],] += out_flow
             self._resources[equipment.input] -= in_flow
             old_resources[equipment.input] -= in_flow
