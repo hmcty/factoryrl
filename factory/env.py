@@ -97,10 +97,10 @@ class FactoryEnv(gym.Env):
             pass
 
         new_resources = self._factory.step()
-        reward = new_resources.get(ResourceType.PAPERCLIP, 0.0) * 2.0
-        reward += new_resources.get(ResourceType.STEEL, 0.0) * 0.5
-        reward += new_resources.get(ResourceType.IRON_ORE, 0.0) * 0.1
-        reward += new_resources.get(ResourceType.COAL_ORE, 0.0) * 0.1
+        reward = new_resources.get(ResourceType.PAPERCLIP, 0.0) * 20.0
+        reward += new_resources.get(ResourceType.STEEL, 0.0) * 10.0
+        reward += new_resources.get(ResourceType.IRON_ORE, 0.0) * 0.01
+        reward += new_resources.get(ResourceType.COAL_ORE, 0.0) * 0.01
         obs = self.observe()
         done = self._step >= self._max_steps
 

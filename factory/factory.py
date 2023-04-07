@@ -73,13 +73,16 @@ class Factory:
     def step(self) -> dict[ResourceType, int]:
         """Computes next step in resource flow and returns increases in resources"""
         old_resources = np.copy(self._resources)
-        new_resources = {}
+        resource_changes = np.zeros(len(ResourceType), dtype=np.float32)
         for equipment in self._equipment:
             in_flow, out_flow = equipment.process(old_resources[equipment.input])
             self._resources[equipment.output] += out_flow
+            print(equipment.output)
+            resource_changes[equipment.output[-1],] += out_flow
             self._resources[equipment.input] -= in_flow
             old_resources[equipment.input] -= in_flow
-        return new_resources
+
+        return {ResourceType(i): resource_changes[i] for i in range(len(ResourceType))}
 
     def reset(self, cursor: tuple[int, int] = (0, 0)):
         self._x, self._y = cursor
