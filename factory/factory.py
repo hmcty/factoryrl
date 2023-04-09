@@ -14,6 +14,7 @@ class Factory:
 
         self._equipment = []
         self._equipment_map = [[EquipmentType.EMPTY for _ in range(map_size[1])] for _ in range(map_size[0])]
+        self._equipment_amts = {}
 
     def move_cursor(self, dx=0, dy=0):
         if self._x + dx < self._map_size[0] and self._x + dx >= 0: self._x += dx
@@ -30,8 +31,9 @@ class Factory:
         y = pos[1] if pos else self._y
         if self._equipment_map[x][y] != EquipmentType.EMPTY:
             return
-        
+
         self._equipment_map[x][y] = type
+        self._equipment_amts[type] = self._equipment_amts.get(type, 0) + 1
         if type == EquipmentType.LEFT_BELT or type == EquipmentType.RIGHT_BELT:
             if x == 0 or x == self._map_size[0]-1: return
             self._equipment.append(Belt((x, y), type))
@@ -52,6 +54,7 @@ class Factory:
             return
 
         self._equipment_map[x][y] = EquipmentType.EMPTY
+        self._equipment_amts[type] = self._equipment_amts.get(type, 0) - 1
         for equipment in self._equipment:
             if equipment.pos == (x, y):
                 self._equipment.remove(equipment)
@@ -65,6 +68,9 @@ class Factory:
 
     def get_resource_amt(self, resource: ResourceType) -> int:
         return self._resource_amts.get(resource, 0)
+
+    def get_equipment_amt(self, type: EquipmentType) -> int:
+        return self._equipment_amts.get(type, 0)
     
     def add_resource(self, x: int, y: int, resource: ResourceType, amt: int):
         self._resources[x, y, resource] = amt

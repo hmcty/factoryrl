@@ -25,7 +25,7 @@ class FactoryAction(IntEnum):
     WAIT = auto()
 
 class FactoryEnv(gym.Env):
-    def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=10000, asset_path="assets"):
+    def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=1000, asset_path="assets"):
         self._map_size = map_size 
         self._obs_size = obs_size
 
@@ -67,7 +67,8 @@ class FactoryEnv(gym.Env):
     def step(self, action: int):
         # Step internal engine
         self._step += 1
-        
+
+        reward = 0.0
         action = FactoryAction(action)
         if action == FactoryAction.MOVE_CURSOR_LEFT:
             self._factory.move_cursor(dx=-1)
@@ -79,16 +80,22 @@ class FactoryEnv(gym.Env):
             self._factory.move_cursor(dy=1)
         elif action == FactoryAction.BUILD_LEFT_BELT:
             self._factory.build_equipment(EquipmentType.LEFT_BELT)
+            reward -= 0.1
         elif action == FactoryAction.BUILD_RIGHT_BELT:
             self._factory.build_equipment(EquipmentType.RIGHT_BELT)
+            reward -= 0.1
         elif action == FactoryAction.BUILD_UP_BELT:
             self._factory.build_equipment(EquipmentType.UP_BELT)
+            reward -= 0.1
         elif action == FactoryAction.BUILD_DOWN_BELT:
             self._factory.build_equipment(EquipmentType.DOWN_BELT)
+            reward -= 0.1
         elif action == FactoryAction.BUILD_MINE:
             self._factory.build_equipment(EquipmentType.MINE)
+            reward -= 100.0
         elif action == FactoryAction.BUILD_FURNACE:
             self._factory.build_equipment(EquipmentType.FURNACE)
+            reward -= 250.0
         # elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
         #     self._factory.build_equipment(EquipmentType.PAPERCLIP_MACHINE)
         elif action == FactoryAction.DESTROY_EQUIPMENT:
@@ -97,7 +104,7 @@ class FactoryEnv(gym.Env):
             pass
 
         new_resources = self._factory.step()
-        reward = new_resources.get(ResourceType.PAPERCLIP, 0.0) * 20.0
+        reward += new_resources.get(ResourceType.PAPERCLIP, 0.0) * 20.0
         reward += new_resources.get(ResourceType.STEEL, 0.0) * 10.0
         reward += new_resources.get(ResourceType.IRON_ORE, 0.0) * 0.01
         reward += new_resources.get(ResourceType.COAL_ORE, 0.0) * 0.01
