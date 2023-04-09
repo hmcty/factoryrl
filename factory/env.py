@@ -25,7 +25,7 @@ class FactoryAction(IntEnum):
     WAIT = auto()
 
 class FactoryEnv(gym.Env):
-    def __init__(self, map_size=(64, 64), obs_size=(64, 64), max_steps=1000, asset_path="assets"):
+    def __init__(self, map_size=(32, 32), obs_size=(64, 64), max_steps=1000, asset_path="assets"):
         self._map_size = map_size 
         self._obs_size = obs_size
 

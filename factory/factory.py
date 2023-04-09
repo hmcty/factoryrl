@@ -4,7 +4,7 @@ import numpy as np
 from typing import Optional
 
 class Factory:
-    def __init__(self, cursor_pos=(0, 0), map_size=(64, 64)):
+    def __init__(self, cursor_pos=(0, 0), map_size=(32, 32)):
         self._x = cursor_pos[0]
         self._y = cursor_pos[1]
         self._map_size = map_size
