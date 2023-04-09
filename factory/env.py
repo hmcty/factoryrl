@@ -72,30 +72,34 @@ class FactoryEnv(gym.Env):
         action = FactoryAction(action)
         if action == FactoryAction.MOVE_CURSOR_LEFT:
             self._factory.move_cursor(dx=-1)
+            reward -= 1.0
         elif action == FactoryAction.MOVE_CURSOR_RIGHT:
             self._factory.move_cursor(dx=1)
+            reward -= 1.0
         elif action == FactoryAction.MOVE_CURSOR_UP:
             self._factory.move_cursor(dy=-1)
+            reward -= 1.0
         elif action == FactoryAction.MOVE_CURSOR_DOWN:
             self._factory.move_cursor(dy=1)
+            reward -= 1.0
         elif action == FactoryAction.BUILD_LEFT_BELT:
             self._factory.build_equipment(EquipmentType.LEFT_BELT)
-            reward -= 0.1
+            reward -= 5.0
         elif action == FactoryAction.BUILD_RIGHT_BELT:
             self._factory.build_equipment(EquipmentType.RIGHT_BELT)
-            reward -= 0.1
+            reward -= 5.0
         elif action == FactoryAction.BUILD_UP_BELT:
             self._factory.build_equipment(EquipmentType.UP_BELT)
-            reward -= 0.1
+            reward -= 5.0
         elif action == FactoryAction.BUILD_DOWN_BELT:
             self._factory.build_equipment(EquipmentType.DOWN_BELT)
-            reward -= 0.1
+            reward -= 5.0
         elif action == FactoryAction.BUILD_MINE:
             self._factory.build_equipment(EquipmentType.MINE)
-            reward -= 100.0
+            reward -= 500.0
         elif action == FactoryAction.BUILD_FURNACE:
             self._factory.build_equipment(EquipmentType.FURNACE)
-            reward -= 250.0
+            reward -= 1000.0
         # elif action == FactoryAction.BUILD_PAPERCLIP_MACHINE:
         #     self._factory.build_equipment(EquipmentType.PAPERCLIP_MACHINE)
         elif action == FactoryAction.DESTROY_EQUIPMENT:
